@@ -15,7 +15,11 @@ router.post('/conversation', isAuthenticated, async (req: AuthRequest, res) => {
       await conversation.save();
       const {users}=req.body
       for (let i=0;1<users.length;i++) {
-          const user=
+          const userObj=users[i]
+          const user = await User.findOneBy({ id: +userObj.id})
+          const conversationUser= Conversation.create({
+              
+          })
       }
     const user = req.user;
     const conversations = await Message.find({

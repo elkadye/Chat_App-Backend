@@ -5,6 +5,7 @@ import { User } from './User';
 
 @Entity()
 export class Conversation extends EmBase {
+  
   @ManyToMany(() => User)
   @JoinTable()
   users: User[];

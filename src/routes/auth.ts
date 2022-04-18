@@ -9,8 +9,8 @@ import { isAuthenticated } from '../middleware/auth'
 
 router.post('/signUp', async (req, res) => {
     try{
-        const {email, password, firstName, lastName, username} = req.body
-        console.log({ email, password, firstName, lastName, username });
+        const {email, password, fullName, username} = req.body
+        console.log({ email, password, fullName,username });
         const userExists = await User.findOne({ where:[{email},{username}]})
         if(userExists){
             return res.status(400).json({
@@ -20,8 +20,7 @@ router.post('/signUp', async (req, res) => {
        const hashedPassword = await bcrypt.hash(password, 12);
        console.log(hashedPassword)
        const user = User.create({
-            firstName,
-            lastName,
+            fullName,
             email,
             username,
             password:hashedPassword
