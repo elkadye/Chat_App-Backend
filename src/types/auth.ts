@@ -6,4 +6,5 @@ export interface MyToken extends JwtPayload{
 }
 export interface AuthRequest extends  Request{
     user: string
+    
 }
