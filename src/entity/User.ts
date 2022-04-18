@@ -11,9 +11,6 @@ export class User extends EmBase {
   @Column({unique: true})
   email: string;
 
-  @Column({unique: true})
-  username: string;
-
   @Column()
   password: string;
 

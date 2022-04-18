@@ -5,12 +5,13 @@ import { User } from './User';
 
 @Entity()
 export class Conversation extends EmBase {
-  
-  @ManyToMany(() => User)
-  @JoinTable()
-  users: User[];
-
-
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
+
+  // @ManyToMany((type) => User, (user)=>user.conversations,{
+  //   cascade: true,
+  // })
+
+  @JoinTable()
+  users: User[];
 }

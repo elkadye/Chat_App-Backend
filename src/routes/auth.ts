@@ -7,11 +7,11 @@ const router=express.Router()
 import {AuthRequest} from '../types/auth'
 import { isAuthenticated } from '../middleware/auth'
 
-router.post('/signUp', async (req, res) => {
+router.post('/signup', async (req, res) => {
     try{
-        const {email, password, fullName, username} = req.body
-        console.log({ email, password, fullName,username });
-        const userExists = await User.findOne({ where:[{email},{username}]})
+        const {email, password, fullName} = req.body
+        console.log({ email, password, fullName});
+        const userExists = await User.findOne({ where:{email}})
         if(userExists){
             return res.status(400).json({
                 message: 'User already exists',
@@ -22,7 +22,6 @@ router.post('/signUp', async (req, res) => {
        const user = User.create({
             fullName,
             email,
-            username,
             password:hashedPassword
         })
         await user.save()
