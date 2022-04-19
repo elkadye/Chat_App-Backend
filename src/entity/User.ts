@@ -1,4 +1,5 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, ManyToMany, OneToMany } from "typeorm";
+import { Conversation } from "./Conversation";
 import { EmBase } from "./EmBase"
 import {Message} from "./Message"
 
@@ -7,14 +8,15 @@ export class User extends EmBase {
   @Column()
   fullName: string;
 
-
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
   @OneToMany(() => Message, (message) => message.user)
-    messages: Message[]
+  messages: Message[];
 
+  // @ManyToMany((type) => Conversation, (conversation) => conversation.users)
+  // conversations: Conversation[];
 }

@@ -8,10 +8,10 @@ export class Conversation extends EmBase {
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  // @ManyToMany((type) => User, (user)=>user.conversations,{
+  // @ManyToMany((type) => User, (user) => user.conversations, {
   //   cascade: true,
   // })
-
+  @ManyToMany(()=>User)
   @JoinTable()
   users: User[];
 }

@@ -8,3 +8,7 @@ export interface AuthRequest extends  Request{
     user: string
     
 }
+export interface userRequest extends  Request{
+    user: []
+    
+}
