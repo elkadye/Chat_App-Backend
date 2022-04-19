@@ -10,7 +10,7 @@ export class Message extends EmBase {
   @Column()
   body: string;
 
-  @Column()
+  @Column({default:false})
   read: boolean;
 
   @ManyToOne(() => User, (user) => user.messages)

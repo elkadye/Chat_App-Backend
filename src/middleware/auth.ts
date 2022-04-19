@@ -14,6 +14,8 @@ export const isAuthenticated = async (req: AuthRequest, res, next)=>{
             const email = token.email
             const user = await User.findOne( { where:{email}})
             req.user = JSON.stringify(user)
+            req.userObj= user
+            
             next()
         }
 

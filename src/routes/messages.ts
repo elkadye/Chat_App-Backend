@@ -7,6 +7,9 @@ import { Message } from '../entity/Message';
 
 import { isAuthenticated } from '../middleware/auth';
 import { AuthRequest, userRequest } from '../types/auth';
+import { brotliDecompressSync } from 'zlib';
+
+// ********************  START CONVERSATION   ********************
 
 // create new conversation
 router.post('/conversation', isAuthenticated, async (req: AuthRequest, res) => {
@@ -65,6 +68,39 @@ router.get(
     }
   },
 );
+// ********************  END CONVERSATION   ********************
+
+
+// ********************  START MESSAGES   ********************
+
+// CREATE MESSAGE INSIDE CONVERSATION
+router.post('/new', isAuthenticated, async (req: AuthRequest, res) => {
+  try {
+    const {body, conversationID} = req.body
+    const user = req.userObj;
+    const conversation = await Conversation.findOneBy({ id: +conversationID });
+    const message = Message.create ({
+        body,
+    conversation,
+    user
+    });
+
+    await message.save();
+
+    res.status(200).json({ message });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+
+
+// ********************  END MESSAGES   ********************
+
+export { router as messageRouter };
+
+
+
 // router.get('/conversations', isAuthenticated, async (req: userRequest, res) => {
 //   try {
 //     const user = req.user;
@@ -78,4 +114,4 @@ router.get(
 //   }
 // });
 
-export { router as messageRouter };
+
