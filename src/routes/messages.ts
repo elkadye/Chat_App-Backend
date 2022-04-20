@@ -15,7 +15,9 @@ import { brotliDecompressSync } from 'zlib';
 router.post('/conversation', isAuthenticated, async (req: AuthRequest, res) => {
   try {
     const { users } = req.body;
-    let conversationUsers =[]
+    let conversationUsers = [];
+    conversationUsers.push(req.userObj);
+
     for (let i = 0; i < users.length; i++) {
       const userObj = users[i];
       const user = await User.findOneBy({ id: +userObj.id });
@@ -41,17 +43,35 @@ router.get('/conversations/:user_id', isAuthenticated, async (req: userRequest, 
   try {
     const {user_id} = req.params;
     const conversations = await Conversation.find({
-    //   relations: {users:true},
+   
       where: {users:{id: +user_id}},
-      relations:{users:true, messages:true}
+      relations:{ users:true, messages: true }
     });
     res.status(200).json({ conversations });
   } catch (error) {
     res.status(500).json({ error });
   }
 });
+// router.get(
+//   '/conversationz/',
+//   isAuthenticated,
+//   async (req: AuthRequest, res) => {
+//     try {
+//       // const {user_id} = req.params;
+//       const user = req.userObj;
+      
+//       const conversations = await Conversation.find({
+//         where: {user:true },
+//         relations: { users: true, messages: true },
+//       });
+//       res.status(200).json({ conversations });
+//     } catch (error) {
+//       res.status(500).json({ error });
+//     }
+//   },
+// );
 
-//get conversation messages by conversation ID
+//get messages by conversation ID
 router.get(
   '/conversation/:conversation_id',
   isAuthenticated,
@@ -60,7 +80,7 @@ router.get(
       const { conversation_id } = req.params;
       const conversation = await Conversation.findOne({
         where: { id: +conversation_id },
-        relations: {users:true,messages:true}
+        relations: {messages:true}
       });
       res.status(200).json({ conversation });
     } catch (error) {
