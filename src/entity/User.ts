@@ -11,8 +11,11 @@ export class User extends EmBase {
   @Column({ unique: true })
   email: string;
 
+  @Column({nullable:true})
+  image: string;
   @Column()
   password: string;
+ 
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
