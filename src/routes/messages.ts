@@ -39,19 +39,23 @@ router.post('/conversation', isAuthenticated, async (req: AuthRequest, res) => {
 });
 
 // Get User conversations
-router.get('/conversations/:user_id', isAuthenticated, async (req: userRequest, res) => {
-  try {
-    const {user_id} = req.params;
-    const conversations = await Conversation.find({
-   
-      where: {users:{id: +user_id}},
-      relations:{ users:true, messages: true }
-    });
-    res.status(200).json({ conversations });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
+router.get(
+  '/conversations/',
+  isAuthenticated,
+  async (req: AuthRequest, res) => {
+    try {
+      // const {user_id} = req.params;
+      const user = req.userObj;
+      const conversations = await Conversation.find({
+        where: { users: { id: +user['id'] } },
+        relations: { users:true, messages:{user:true}},
+      });
+      res.status(200).json({ conversations });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  },
+);
 // router.get(
 //   '/conversationz/',
 //   isAuthenticated,
@@ -100,7 +104,7 @@ router.post('/new', isAuthenticated, async (req: AuthRequest, res) => {
     const user = req.userObj;
     const conversation = await Conversation.findOneBy({ id: +conversationID });
     const message = Message.create ({
-        body,
+    body,
     conversation,
     user
     });
