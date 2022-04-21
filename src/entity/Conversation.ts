@@ -5,7 +5,7 @@ import { User } from './User';
 
 @Entity()
 export class Conversation extends EmBase {
-  @Column()
+  @Column({nullable:true})
   name: string;
 
   @OneToMany(() => Message, (message) => message.conversation)
