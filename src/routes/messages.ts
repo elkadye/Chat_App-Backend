@@ -38,24 +38,62 @@ router.post('/conversation', isAuthenticated, async (req: AuthRequest, res) => {
   }
 });
 
+
+// router.post("/", async (req, res) => {
+  
+//     const newConversation = new Conversation({
+//       users: [req.body.userId, req.body.receiverId],
+//     });
+  
+//   try {
+//     const savedConversation = await newConversation.save();
+//     res.status(200).json(savedConversation);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+
+
+
 // Get User conversations
-router.get(
-  '/conversations/',
-  isAuthenticated,
-  async (req: AuthRequest, res) => {
-    try {
-      // const {user_id} = req.params;
-      const user = req.userObj;
-      const conversations = await Conversation.find({
-        where: { users: { id: +user['id'] } },
-        relations: { users:true, messages:{user:true}},
-      });
-      res.status(200).json({ conversations });
-    } catch (error) {
-      res.status(500).json({ error });
-    }
-  },
-);
+// router.get(
+//   '/conversations/',
+//   isAuthenticated,
+//   async (req: AuthRequest, res) => {
+//     try {
+//       // const {user_id} = req.params;
+//       const user = req.userObj;
+//       const conversations = await Conversation.find({
+//         where: { users: { id: +user['id'] } },
+//         relations: { users:true, messages:{user:true}},
+//       });
+//       res.status(200).json({ conversations });
+//     } catch (error) {
+//       res.status(500).json({ error });
+//     }
+//   },
+// );
+
+router.get("/conversations/", isAuthenticated, async (req: AuthRequest, res) => {
+  try {
+   
+    const {conversations} = await User.findOne({
+      where: { id: req.userObj.id }, 
+      relations: {
+        conversations: { messages: { user: true } , users:true}
+        
+       }
+    })
+    res.status(200).json({conversations})
+  }
+  catch (error) {
+    res.status(500).json({ error });
+  }
+})
+
+
+
 // router.get(
 //   '/conversationz/',
 //   isAuthenticated,
