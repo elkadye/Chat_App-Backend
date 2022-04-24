@@ -11,7 +11,7 @@ export class Conversation extends EmBase {
   @OneToMany(() => Message, (message) => message.conversation)
   messages: Message[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User,(user)=>user.conversations)
   @JoinTable()
   users: User[];
 }
