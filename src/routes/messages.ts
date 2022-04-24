@@ -84,7 +84,7 @@ router.get(
       const { conversation_id } = req.params;
       const conversation = await Conversation.findOne({
         where: { id: +conversation_id },
-        relations: {messages:true}
+        relations: {messages:true,users:true}
       });
       res.status(200).json({ conversation });
     } catch (error) {
